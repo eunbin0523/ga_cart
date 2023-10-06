@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head>
+      <meta charset="UTF-8">
+      <title>Spring Shop Online</title>
+      <link rel="stylesheet" type="text/css" th:href="@{/style.css}" />
+      <th:block th:include="_header"></th:block>
+
+        <script th:inline="javascript">
+          window.dataLayer = window.dataLayer || [];
+          const car = [[${myCart}]];
+          const items = car.cartLines.map(value => {
+            return { 
+              item_id: value.productInfo.code, 
+              item_name: value.productInfo.name,
+            };
+          });
+
+          const item_ids = items.map(item => item.item_id);
+          const item_names = items.map(item => item.item_name);
+
+          dataLayer.push({
+            "event": "purchase",
+            "ecommerce": {
+              "transaction_id": car.customerInfo.name,
+              "currency": "USD",
+              "value": car.amountTotal,
+              "items": {
+                "item_id": item_ids,
+                "item_name": item_names,
+              }
+            }
+          });
+
+          let mycart = [[${myCart}]];
+          console.log(mycart);
+        </script>
+
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-N48G9QR');</script>
+    <!-- End Google Tag Manager -->
+   </head>
+   <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N48G9QR" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+      <th:block th:include="_menu"></th:block>
+       
+      <div class="page-title">Confirmation</div>
+      <div class="customer-info-container">
+         <h3>Customer Information:</h3>
+         <ul>
+            <li>Name: <span th:utext="${myCart.customerInfo.name}"></span></li>
+            <li>Email: <span th:utext="${myCart.customerInfo.email}"></span></li>
+            <li>Phone: <span th:utext="${myCart.customerInfo.phone}"></span></li>
+            <li>Address: <span th:utext="${myCart.customerInfo.address}"></span></li>
+         </ul>
+         <h3>Cart Summary:</h3>
+         <ul>
+            <li>Quantity: <span th:utext="${myCart.quantityTotal}"></span>$</li>
+            <li>Total:
+               <span class="total"
+                  th:utext="${#numbers.formatDecimal(myCart.amountTotal,3,2,'COMMA')}">  
+               </span>
+            </li>
+         </ul>
+      </div>
+      <form method="POST" th:action="@{/shoppingCartConfirmation}">
+         <!-- Edit Cart -->
+         <a class="navi-item" th:href="@{/shoppingCart}">
+         Edit Cart
+         </a>
+         <!-- Edit Customer Info -->
+         <a class="navi-item" th:href="@{/shoppingCartCustomer}">
+         Edit Customer Info
+         </a>
+         <!-- Send/Save -->
+         <input type="submit" value="Send" class="button-send-sc" />
+      </form>
+      <div class="container">
+         <div class="product-preview-container" th:each="cartLineInfo : ${myCart.cartLines}">
+            <ul>
+               <li>
+                  <img class="product-image"
+                     src="@{|/productImage?code=${cartLineInfo.productInfo.code}|}" />
+               </li>
+               <li>
+                  Code: <span th:utext="${cartLineInfo.productInfo.code}"></span>
+                  <input
+                     type="hidden" name="code" th:value="${cartLineInfo.productInfo.code}" />
+               </li>
+               <li>Name: <span th:utext="${cartLineInfo.productInfo.name}"></span></li>
+               <li>Price:
+                  <span class="price"
+                     th:utext="${#numbers.formatDecimal(cartLineInfo.productInfo.price,3,2,'COMMA')}">
+                  </span>
+               </li>
+               <li>Quantity: <span th:utext="${cartLineInfo.quantity}"></span></li>
+               <li>Subtotal:
+                  <span class="subtotal"
+                     th:utext="${#numbers.formatDecimal(cartLineInfo.amount,3,2,'COMMA')}">
+                  </span>
+               </li>
+            </ul>
+         </div>
+      </div>
+       
+      <th:block th:include="_footer"></th:block>
+       
+   </body>
+</html>
