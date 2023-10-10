@@ -8,10 +8,17 @@
    <th:block th:include="_header"></th:block>
    <script th:inline="javascript">
       window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+         "user_id": userName,
+         "event": 'login',
+         "login": {
+            "method": 'Gmail',
+            "user_id": userName,
+         }
+      });
 
       let userName = /*[[${#request.userPrincipal.name}]]*/ 'defaultUserName';
       console.log("User Name:", userName);
-
    </script>
 
 
