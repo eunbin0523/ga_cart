@@ -9,12 +9,8 @@
    <script th:inline="javascript">
       window.dataLayer = window.dataLayer || [];
 
-      let request = [[${ request }]];
-      console.log("Request Object:", request);
-
-      if (request && request.userPrincipal) {
-         console.log("User Principal:", request.userPrincipal.name);
-      }
+      let userName = "[[${#request.userPrincipal.name}]]";
+      console.log("User Name:", userName);
    </script>
 
 
