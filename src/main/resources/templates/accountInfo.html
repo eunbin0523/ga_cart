@@ -9,8 +9,9 @@
    <script th:inline="javascript">
       window.dataLayer = window.dataLayer || [];
 
-      let userName = /*[(${#request.userPrincipal.name})]*/ 'defaultUserName';
+      let userName = /*[[${#request.userPrincipal.name}]]*/ 'defaultUserName';
       console.log("User Name:", userName);
+
    </script>
 
 
