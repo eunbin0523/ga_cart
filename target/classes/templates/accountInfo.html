@@ -7,6 +7,10 @@
    <link rel="stylesheet" type="text/css" th:href="@{/style.css}" />
    <th:block th:include="_header"></th:block>
    <script th:inline="javascript">
+
+      let userName = /*[[${#request.userPrincipal.name}]]*/ 'defaultUserName';
+      console.log("User Name:", userName);
+      
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({
          "user_id": userName,
@@ -16,9 +20,6 @@
             "user_id": userName,
          }
       });
-
-      let userName = /*[[${#request.userPrincipal.name}]]*/ 'defaultUserName';
-      console.log("User Name:", userName);
    </script>
 
 
