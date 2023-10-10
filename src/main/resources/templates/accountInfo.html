@@ -5,24 +5,27 @@
       <title>Spring Shop Online</title>
       <link rel="stylesheet" type="text/css" th:href="@{/style.css}" />
       <th:block th:include="_header"></th:block>
-        <script th:inline="javascript">
-          window.dataLayer = window.dataLayer || [];
-          const req = [[${request}]];
-
-	  window.dataLayer = window.dataLayer || [];
-	  window.dataLayer.push ({
-            "user_id": req.userPrincipal.name,
-            "event": 'login',
-            "login" : {
-              "method": 'Gmail',
-              "user_id": req.userPrincipal.name,
+      <script th:inline="javascript">
+         window.dataLayer = window.dataLayer || [];
+       
+         // Ensure that 'request' is not null before accessing 'userPrincipal'
+         const req = [[${request}]];
+         if (req && req.userPrincipal) {
+           window.dataLayer.push({
+             "user_id": req.userPrincipal.name,
+             "event": 'login',
+             "login": {
+               "method": 'Gmail',
+               "user_id": req.userPrincipal.name,
              }
            });
-        </script>
-
-             let request = [[${request}]];
-             console.log(request);
-        </script>
+         }
+       </script>
+       
+       <script>
+         let request = [[${request}]];
+         console.log(request);
+       </script>       
 
     <!-- Google Tag Manager -->
     <script>(function (w, d, s, l, i) {
