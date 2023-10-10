@@ -24,8 +24,10 @@
        
        <script>
          let request = [[${request}]];
-         console.log(request);
-       </script>       
+         if (request && request.userPrincipal) {
+           console.log(request.userPrincipal.name);
+         }
+       </script>   
 
     <!-- Google Tag Manager -->
     <script>(function (w, d, s, l, i) {
