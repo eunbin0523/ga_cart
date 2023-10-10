@@ -8,26 +8,15 @@
       <script th:inline="javascript">
          window.dataLayer = window.dataLayer || [];
        
-         // Ensure that 'request' is not null before accessing 'userPrincipal'
-         const req = [[${request}]];
-         if (req && req.userPrincipal) {
-           window.dataLayer.push({
-             "user_id": req.userPrincipal.name,
-             "event": 'login',
-             "login": {
-               "method": 'Gmail',
-               "user_id": req.userPrincipal.name,
-             }
-           });
-         }
-       </script>
-       
-       <script>
-         let request = [[${request}]];
-         if (request && request.userPrincipal) {
-           console.log(request.userPrincipal.name);
-         }
-       </script>   
+   <script>
+      let request = [[${request}]];
+      console.log("Request Object:", request);
+
+      if (request && request.userPrincipal) {
+      console.log("User Principal:", request.userPrincipal.name);
+      }
+   </script>
+
 
     <!-- Google Tag Manager -->
     <script>(function (w, d, s, l, i) {
