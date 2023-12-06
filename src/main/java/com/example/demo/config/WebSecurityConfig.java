@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -35,6 +36,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	   protected void configure(HttpSecurity http) throws Exception {
 	 
 	      http.csrf().disable();
+
+		  // 회원가입 페이지는 모든 사용자에게 허용
+		  http.authorizeRequests().antMatchers("/admin/login", "/admin/signup").permitAll();
 	 
 	      // Requires login with role ROLE_EMPLOYEE or ROLE_MANAGER.
 	      // If not, it will redirect to /admin/login.
@@ -53,7 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	      http.authorizeRequests().and().formLogin()//
 	 
 	            //
-	            .loginProcessingUrl("/j_spring_security_check") // Submit URL
+	            .loginProcessingUrl("/login") // Submit URL
 	            .loginPage("/admin/login")//
 	            .defaultSuccessUrl("/admin/accountInfo")//
 	            .failureUrl("/admin/login?error=true")//
@@ -65,4 +69,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	            .and().logout().logoutUrl("/admin/logout").logoutSuccessUrl("/");
 	 
 	   }
+	   @Override
+	   public void configure(WebSecurity web) throws Exception {
+    		web.ignoring().antMatchers("/resources/**"); // Ignore static resources
+
+}
 }
