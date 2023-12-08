@@ -51,4 +51,9 @@ public class UserDetailsServiceImpl implements UserDetailsService{
  
         return userDetails;
     }
+
+        // 추가: 사용자명(username)을 기반으로 Account 객체를 가져오는 메서드
+        public Account getAccountByUsername(String username) {
+            return accountDAO.findAccount(username);
+        }
 }

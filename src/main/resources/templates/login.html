@@ -83,10 +83,18 @@
              </div>
          </th:block>
 
-            <form method="POST" th:action="@{/login}">
+          <!-- 추가된 부분 -->
+          <th:block th:if="${param.success}">
+              <div style="color: green; margin: 10px 0px;">
+                  Welcome! Your registration was successful. Please log in.
+              </div>
+          </th:block>
+
+            <form method="POST" th:action="@{/j_spring_security_check}">
               <div class="form-group">
                 <label for="exampleInputEmail1">Username</label>
                 <input type="text" name="userName" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+
               </div>
               <div class="form-group">
                 <label for="exampleInputPassword1">Password</label>
@@ -97,10 +105,8 @@
                 <label class="form-check-label" for="exampleCheck1">Check me out</label>
               </div>
               <button type="submit" class="spring-btn-black">LOG IN <span class="fa fa-arrow-right" style="margin-left: 9px;"></span></button>
-            </form>
-            
-            <form method="POST" action="/signup">
-              <button type="submit" class="spring-btn-black">SIGN UP <span class="fa fa-arrow-right" style="margin-left: 9px;"></span></button>
+              <button type="button" onclick="location.href='/admin/signup'" class="spring-btn-black">SIGN UP <span class="fa fa-arrow-right" style="margin-left: 9px;"></span></button>
+    
             </form>
             
             <span class="error-message" th:utext="${error}"></span>
@@ -140,8 +146,6 @@
                 <a href=""  class="spring-btn-black" />JOIN THE CLUB <span class="fa fa-arrow-right" style="margin-left: 9px;"></span></a>
 
                 <br><br>
-
-                <img src="https://www.adidas.com/glass/react/ce0f36d/assets/img/CC2.0_my_account_register.jpg">
             
                 
             </div>

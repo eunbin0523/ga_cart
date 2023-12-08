@@ -26,6 +26,7 @@ import com.example.demo.form.ProductForm;
 import com.example.demo.model.OrderDetailInfo;
 import com.example.demo.model.OrderInfo;
 import com.example.demo.pagination.PaginationResult;
+import com.example.demo.service.AccountService;
 import com.example.demo.validator.ProductFormValidator;
 
 @Controller
@@ -41,6 +42,9 @@ public class AdminController {
    @Autowired
    private ProductFormValidator productFormValidator;
  
+   @Autowired
+   private AccountService accountService; // AccountService 주입
+
    @InitBinder
    public void myInitBinder(WebDataBinder dataBinder) {
       Object target = dataBinder.getTarget();
@@ -60,6 +64,30 @@ public class AdminController {
  
       return "login";
    }
+
+   // GET: Show Signup Page
+   @RequestMapping(value = { "/admin/signup" }, method = RequestMethod.GET)
+   public String signup(Model model) {
+      return "signup";
+   }
+
+    // POST: Process Signup
+    @RequestMapping(value = { "/admin/signup" }, method = RequestMethod.POST)
+    public String processSignup(@RequestParam(name = "userName") String userName,
+                                @RequestParam(name = "password") String password,
+                                Model model) {
+        // UserService를 통해 회원가입 처리
+        boolean signupSuccessful = accountService.registerNewUser(userName, password);
+
+        if (signupSuccessful) {
+            // 회원가입 성공 시 로그인 페이지로 리다이렉트
+            return "redirect:/admin/login?success=true";
+        } else {
+            // 회원가입 실패 시 에러 메시지와 함께 다시 회원가입 페이지 보여주기
+            model.addAttribute("error", "회원가입에 실패했습니다. 다시 시도해주세요.");
+            return "signup";
+        }
+    }
  
    @RequestMapping(value = { "/admin/accountInfo" }, method = RequestMethod.GET)
    public String accountInfo(Model model) {

@@ -9,10 +9,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.example.demo.service.UserDetailsServiceImpl;
 
 @Configuration
+@EnableTransactionManagement
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	   UserDetailsServiceImpl userDetailsService;
@@ -55,11 +57,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	 
 	      // Configuration for Login Form.
 	      http.authorizeRequests().and().formLogin()//
-	 
-	            //
 	            .loginProcessingUrl("/login") // Submit URL
 	            .loginPage("/admin/login")//
-	            .defaultSuccessUrl("/admin/accountInfo")//
+	            .defaultSuccessUrl("/admin/login?success=true")//
 	            .failureUrl("/admin/login?error=true")//
 	            .usernameParameter("userName")//
 	            .passwordParameter("password")
@@ -67,11 +67,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	            // Configuration for the Logout page.
 	            // (After logout, go to home page)
 	            .and().logout().logoutUrl("/admin/logout").logoutSuccessUrl("/");
-	 
-	   }
-	   @Override
-	   public void configure(WebSecurity web) throws Exception {
-    		web.ignoring().antMatchers("/resources/**"); // Ignore static resources
+		// 로그인 페이지의 POST 요청 처리 URL 설정
+		http.formLogin().loginProcessingUrl("/j_spring_security_check");
 
-}
+		// 이 부분이 추가된 부분입니다. 
+		http.formLogin().permitAll();
+	}
 }
