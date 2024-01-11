@@ -52,7 +52,7 @@
         $<span th:utext="${prodInfo.price}"></span>
       </p>
       <h6 class="h6_offer">2 colors</h6>
-      <a th:href="@{|/buyProduct?code=${prodInfo.code}|}" class="btn btn-link" >Buy Now</a>
+      <a th:href="@{|/buyProduct?code=${prodInfo.code}|}" class="btn btn-link" onclick="dataLayer.push({'event': 'item_buynow_btn_click', 'productCode': '${prodInfo.code}'});">Buy Now</a>
             </div>
              </div>
              

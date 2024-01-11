@@ -5,6 +5,38 @@
       <title>Spring Shop Online</title>
       <link rel="stylesheet" type="text/css" th:href="@{/style.css}" />
       <th:block th:include="_header"></th:block>
+
+      <script th:inline="javascript">
+        window.dataLayer = window.dataLayer || [];
+        const car = [[${myCart}]];
+        const items = car.cartLines.map(value => {
+          return { 
+            item_id: value.productInfo.code, 
+            item_name: value.productInfo.name,
+          };
+        });
+
+        const item_ids = items.map(item => item.item_id);
+        const item_names = items.map(item => item.item_name);
+
+        dataLayer.push({
+          "event": "begin_checkout",
+          "checkout": {
+            "transaction_id": car.customerInfo.name,
+            "affiliation": 'Online Store',
+            "currency": "USD",
+            "value": car.amountTotal,
+            "items": {
+              "item_id": item_ids,
+              "item_name": item_names,
+            }
+          }
+        });
+
+        let mycart = [[${myCart}]];
+        console.log(mycart);
+      </script>
+
     <!-- Google Tag Manager -->
     <script>(function (w, d, s, l, i) {
             w[l] = w[l] || []; w[l].push({

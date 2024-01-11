@@ -13,11 +13,13 @@
             return { 
               item_id: value.productInfo.code, 
               item_name: value.productInfo.name,
+              item_price: value.productInfo.price
             };
           });
 
           const item_ids = items.map(item => item.item_id);
           const item_names = items.map(item => item.item_name);
+          const item_prices = items.map(item => item.item_price);
 
           dataLayer.push({
             "event": "purchase",
@@ -25,9 +27,11 @@
               "transaction_id": car.customerInfo.name,
               "currency": "USD",
               "value": car.amountTotal,
+              "quantity": car.quantityTotal
               "items": {
                 "item_id": item_ids,
                 "item_name": item_names,
+                "price": item_price
               }
             }
           });
